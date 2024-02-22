@@ -1,6 +1,6 @@
 # ⛅📀 Meteo Setup
 
-[🇵🇱 Polish version of README](README_PL.md)
+[🇵🇱 Polish version of README](README.pl.md)
 
 Setup script for [my meteo station](https://github.com/bartekl1/meteo)
 
