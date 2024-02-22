@@ -11,12 +11,12 @@ Purple='\033[0;35m'       # Purple
 Cyan='\033[0;36m'         # Cyan
 White='\033[0;37m'        # White
 
-echo "*********************************************"
-echo "*                Meteo Setup                *"
-echo "*     Setup script for my meteo station     *"
-echo "*  https://github.com/bartekl1/meteo-setup  *"
-echo "*         by @bartekl1       v. 1.0         *"
-echo "*********************************************"
+echo "***********************************************"
+echo "*                 Meteo Setup                 *"
+echo "*      Setup script for my meteo station      *"
+echo "*   https://github.com/bartekl1/meteo-setup   *"
+echo "*          by @bartekl1       v. 1.0          *"
+echo "***********************************************"
 echo
 
 if [ "$EUID" -ne 0 ]
@@ -26,7 +26,7 @@ then
     exit
 fi
 
-echo "===== Raspberry Pi configuration ====="
+echo "========= Raspberry Pi configuration  ========="
 
 read -p "Run raspi-config? (y/n) " rpi_config
 if [[ $rpi_config =~ ^[Yy]$ ]]
@@ -47,7 +47,7 @@ then
 fi
 
 echo
-echo "===== Installation ====="
+echo "================ Installation  ================"
 read -p "Update system? (y/n) " update_system
 read -p "Install apache2? (y/n) " install_apache2
 read -p "Install mariadb-server? (y/n) " install_mariadb
@@ -203,6 +203,8 @@ then
     echo -e "[Unit]\nDescription=Ngrok\nAfter=network.target\n\n[Service]\nWorkingDirectory=${user_home}\nExecStart=/usr/local/bin/ngrok start --config=ngrok.yml meteo\nRestart=always\n\n[Install]\nWantedBy=multi-user.target\n" | tee "/etc/systemd/system/ngrok.service" > /dev/null
     systemctl start ngrok
     systemctl enable ngrok
+    mkdir /var/www/html/remote
+    echo -e "<?php\nheader('Location: https://${ngrok_domain}/');\nexit;\n?>\n" | tee "/var/www/html/remote/index.php" > /dev/null
 fi
 
 read -p "Join zerotier network? (y/n) " configure_zerotier
